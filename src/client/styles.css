@@ -1,0 +1,88 @@
+:root {
+  color: #1c2430;
+  background: #f3f5f8;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.45;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; }
+
+a { color: #1f4b99; }
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: #1f4b99;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+}
+
+button.secondary { background: #e7ebf2; color: #1c2430; }
+button.danger { background: #9d2c2c; }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+input[type='checkbox'] { width: auto; }
+
+input, select, textarea {
+  width: 100%;
+  border: 1px solid #c9d1dc;
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+  background: white;
+}
+
+label { display: grid; gap: 0.3rem; font-size: 0.92rem; }
+
+.shell { max-width: 980px; margin: 0 auto; padding: 1.5rem; }
+.narrow { max-width: 760px; }
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e1e6ee;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.grid { display: grid; gap: 0.75rem; }
+.grid.two { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+.row { display: flex; gap: 0.5rem; align-items: end; flex-wrap: wrap; }
+.row > * { flex: 1; }
+.row button { flex: 0; }
+
+.muted { color: #5c6b7e; }
+.error { color: #9d2c2c; }
+.ok { color: #0f6b45; }
+
+.slots { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.slots button { background: white; color: #1f4b99; border: 1px solid #c5d3ea; }
+.slots button[aria-pressed="true"] { background: #1f4b99; color: white; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.45rem 0.35rem; border-bottom: 1px solid #e8edf3; vertical-align: top; }
+
+.banner {
+  background: #e8f6ee;
+  border: 1px solid #b7e0c7;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+}
+
+code { font-family: ui-monospace, Consolas, monospace; font-size: 0.92em; }

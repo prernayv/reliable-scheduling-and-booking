@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: slotbook
+      POSTGRES_PASSWORD: slotbook
+      POSTGRES_DB: slotbook
+    ports:
+      - "5432:5432"
+    volumes:
+      - slotbook-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U slotbook -d slotbook"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://slotbook:slotbook@postgres:5432/slotbook
+      SESSION_SECRET: dev-session-secret-change-me
+      NODE_ENV: production
+      PORT: 3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  slotbook-pg:

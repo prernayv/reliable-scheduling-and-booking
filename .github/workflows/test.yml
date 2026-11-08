@@ -1,0 +1,45 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: slotbook
+          POSTGRES_PASSWORD: slotbook
+          POSTGRES_DB: slotbook
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U slotbook -d slotbook"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 30
+    env:
+      DATABASE_URL: postgres://slotbook:slotbook@localhost:5432/slotbook
+      SESSION_SECRET: ci-session-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: API and slot tests
+        run: pnpm test
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Guest flow
+        run: pnpm test:e2e

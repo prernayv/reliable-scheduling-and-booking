@@ -1,0 +1,6 @@
+node_modules
+dist
+.pgdata
+.git
+.env
+*.log

@@ -1,0 +1,47 @@
+# Hold then confirm on the public booking path.
+# Start the API first: pnpm start
+# Then: pnpm load
+config:
+  target: "http://127.0.0.1:3000"
+  processor: "./processor.cjs"
+  phases:
+    - name: book
+      duration: 20
+      arrivalRate: 3
+  http:
+    timeout: 10
+before:
+  flow:
+    - function: "setWindow"
+    - get:
+        url: "{{ slotUrl }}"
+        afterResponse: "stashSlots"
+scenarios:
+  - name: hold and confirm
+    flow:
+      - function: "assign"
+      - post:
+          url: "/api/holds"
+          headers:
+            content-type: "application/json"
+            idempotency-key: "{{ key }}"
+            x-forwarded-for: "{{ ip }}"
+          json:
+            host: "demo"
+            eventSlug: "workshop"
+            startsAt: "{{ startsAt }}"
+          capture:
+            - json: "$.id"
+              as: "holdId"
+          expect:
+            - statusCode: 201
+      - post:
+          url: "/api/holds/{{ holdId }}/confirm"
+          headers:
+            content-type: "application/json"
+            x-forwarded-for: "{{ ip }}"
+          json:
+            name: "Load Guest"
+            email: "{{ email }}"
+          expect:
+            - statusCode: 200
